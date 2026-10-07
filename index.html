@@ -163,6 +163,10 @@
 
       <label>每月收入（元，用于 50/30/20）</label>
       <input type="number" id="income" value="20000" min="0" step="500">
+      <div class="slider">
+        <input type="range" id="incomeR" min="0" max="100000" step="500">
+        <div class="slabel"><span>0</span><span>10万/月</span></div>
+      </div>
       <div class="note">留空或 0 则仅展示覆盖贷款所需的最低月收入。</div>
       <button class="copy" id="copyBtn">🔗 复制分享链接</button>
     </div>
@@ -570,7 +574,7 @@ function setPrincipal(v){
   $('principal').value=v; $('principalR').value=v; calc();
 }
 function syncSliders(){
-  [['principalR','principal'],['rateR','rate'],['yearsR','years']].forEach(([r,i])=>{
+  [['principalR','principal'],['rateR','rate'],['yearsR','years'],['incomeR','income']].forEach(([r,i])=>{
     const v=+$(''+i).value||0; $(r).value=clamp(v,+$(r).min,+$(r).max);
   });
 }
@@ -623,7 +627,7 @@ function decodeState(){
 }
 
 /* ---------- 事件 ---------- */
-['income','ppAmt','ppYear'].forEach(id=>$(id).addEventListener('input',calc));
+['ppAmt','ppYear'].forEach(id=>$(id).addEventListener('input',calc));
 $('method').addEventListener('click',e=>{ if(e.target.tagName==='BUTTON'){ [...$('method').children].forEach(b=>b.classList.remove('on')); e.target.classList.add('on'); calc(); }});
 $('ppMode').addEventListener('click',e=>{ if(e.target.tagName==='BUTTON'){ [...$('ppMode').children].forEach(b=>b.classList.remove('on')); e.target.classList.add('on'); calc(); }});
 
@@ -631,7 +635,7 @@ $('ppMode').addEventListener('click',e=>{ if(e.target.tagName==='BUTTON'){ [...$
 $('pChips').addEventListener('click',e=>{ if(e.target.tagName==='BUTTON'){ setPrincipal(+e.target.dataset.v); }});
 $('pPlus').addEventListener('click',()=>{ setPrincipal((+$('principal').value||0)+100000); });
 $('pMinus').addEventListener('click',()=>{ setPrincipal((+$('principal').value||0)-100000); });
-bindSlider('principalR','principal'); bindSlider('rateR','rate'); bindSlider('yearsR','years');
+bindSlider('principalR','principal'); bindSlider('rateR','rate'); bindSlider('yearsR','years'); bindSlider('incomeR','income');
 
 $('copyBtn').addEventListener('click',()=>{
   const b=$('copyBtn'); const t=b.textContent;
